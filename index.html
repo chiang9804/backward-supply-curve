@@ -17,7 +17,7 @@
 </div>
 </body>
 <script>
-var f = "./data/data_clean_full-time.csv"
+var f = "./data/data_full-time_category.csv"
 var degree = 3; // degree of regression
 
 var dataset = [];
@@ -25,11 +25,29 @@ var data_wage_work = [];
 d3.csv(f, function(data) {
     plotPart1(data);
     plotPart2(data);
+    plotPart3(data);
 });
+
+function plotPart3(data) {
+    var margin = {top: 30, right: 20, bottom: 30, left: 50},
+    width = 600 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
+    var svg = d3.select("#part1")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+}
 
 function plotPart2(data) {
     var svg = d3.select("#part1")
         .append("svg");
+}
+
+function plotMultipleData() {
+
 }
 
 function plotPart1(data) {
