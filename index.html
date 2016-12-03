@@ -7,6 +7,14 @@
     <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+<div id="part1" class="part">
+</div>
+
+<div id="part2" class="part">
+</div>
+
+<div id="part3" class="part">
+</div>
 </body>
 <script>
 var f = "./data/data_clean_full-time.csv"
@@ -15,20 +23,39 @@ var degree = 3; // degree of regression
 var dataset = [];
 var data_wage_work = [];
 d3.csv(f, function(data) {
-    dataset = data;
+    plotPart1(data);
+    plotPart2(data);
+});
+
+function plotPart2(data) {
+    var svg = d3.select("#part1")
+        .append("svg");
+}
+
+function plotPart1(data) {
     data_work_wage = data.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
     // median_data = getMedianForY(data_work_wage);
     // console.log(median_data);
     reg_data = getRegressionDataForY(data_work_wage);
-    plotData(data_work_wage, reg_data);
-});
 
-function plotData(data, line_data) {
     // Set the dimensions of the canvas / graph
     var margin = {top: 30, right: 20, bottom: 30, left: 50},
     width = 1000 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
+    // Adds the svg canvas
+    var svg = d3.select("#part1")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
+    plotDataAndSupplyCurve(svg, width, height, data_work_wage, reg_data);
+}
+
+function plotDataAndSupplyCurve(svg, width, height, data, line_data) {
     // Set the ranges
     var x = d3.scale.linear().range([0, width]);
     var y = d3.scale.linear().range([height, 0]);
@@ -45,15 +72,6 @@ function plotData(data, line_data) {
         .x(function(d) { return x(d[0]); })
         .y(function(d) { return y(d[1]); })
         .interpolate("basis");
-
-        // Adds the svg canvas
-    var svg = d3.select("body")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
 
     // Scale the range of the data
     x.domain([0, d3.max(data, function(d) { return d[0]; })]);

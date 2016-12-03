@@ -7,7 +7,7 @@
 
 ## Information
 ### Project
-This repo is the source code for the [project](https://docs.google.com/document/d/14SxMTeG9VJA25Zqedmd5lwpZN_vcf8avyECohRtULug/edit)
+This repo is the source code for the [project.](https://docs.google.com/document/d/14SxMTeG9VJA25Zqedmd5lwpZN_vcf8avyECohRtULug/edit)
 
 ### Source
 * [d3.js](https://github.com/d3/d3)

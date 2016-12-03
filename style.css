@@ -5,11 +5,27 @@ path {
     stroke-width: 2;
     fill: none;
 }
-
 .axis path,
 .axis line {
     fill: none;
     stroke: grey;
     stroke-width: 1;
     shape-rendering: crispEdges;
+}
+
+.part {
+    width: 100vw;
+    height: 80vh;
+}
+
+#part1 {
+    background-color: LightSkyBlue;
+}
+
+#part2 {
+    background-color: LightPink;
+}
+
+#part3 {
+    background-color: LightGreen;
 }
