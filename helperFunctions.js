@@ -1,3 +1,14 @@
+function getPieChartData(data) {
+    var travel = d3.sum(data, function(d) { return +d.travel});
+    var sleep = d3.sum(data, function(d) { return +d.sleep});
+    var work_act = d3.sum(data, function(d) { return +d.work_act});
+    var household = d3.sum(data, function(d) { return +d.household_combine});
+    var leisure = d3.sum(data, function(d) { return +d.Leisure_Combine});
+    var others = d3.sum(data, function(d) { return +d.Others});
+    return { "travel": travel, "sleep": sleep, "work": work_act,
+    "household": household, "leisure": leisure, "others": others };
+}
+
 // Return regression data, labels, max of x, max of y
 function filterDataByKey(data, key) {
     if (data.length <= 0) {

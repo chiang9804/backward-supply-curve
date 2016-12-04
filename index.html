@@ -145,8 +145,16 @@ function plotPart1(data) {
         .attr("height", height);
 
     plotDataAndSupplyCurve(svg, margin, data_work_wage);
+
+    var pieSvg = d3.select("#part1-right")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    drawPie(pieSvg, margin, data);
 }
 
+// data should in [[x1, y1], [x2, y2], ...]
 function plotDataAndSupplyCurve(svg, margin, data) {
     var line_data = getRegressionDataForY(data);
     var chart = svg.append("g")
@@ -206,7 +214,36 @@ function plotDataAndSupplyCurve(svg, margin, data) {
 
 }
 
-function drawPie(svg, data) {
+function drawPie(svg, margin, data) {
+    data_dict = getPieChartData(data);
+    dataset = [data_dict.travel, data_dict.sleep, data_dict.work, data_dict.household, data_dict.leisure, data_dict.others];
+
+    var chart = svg.append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+    var width = svg.node().getBoundingClientRect().width - margin.left - margin.right;
+    var height = svg.node().getBoundingClientRect().height - margin.top - margin.bottom;
+    var pieOffset = 10;
+    var radius = Math.min(width, height) / 2 - pieOffset;
+    var cx = width/2;
+    var cy = height/2;
+
+    var colorScale = d3.scale.category10();
+    var arc = d3.svg.arc()
+              .innerRadius(0)
+              .outerRadius(radius);
+    var pie = d3.layout.pie();
+    console.log(dataset);
+    console.log(pie);
+
+    var arcs = chart.selectAll(".arc")
+            .data(pie(dataset)) //pie is the d3.layout.pie function
+            .enter()
+            .append("path")
+            .attr("class", "arc")
+            .attr("d", arc)
+            .attr("transform", "translate(" + cx + " " + cy + ")")
+            .style("fill", function(d,i) { return colorScale(i) });
 
 }
 
