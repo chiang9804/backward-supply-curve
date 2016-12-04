@@ -1,12 +1,20 @@
 function getPieChartData(data) {
-    var travel = d3.sum(data, function(d) { return +d.travel});
-    var sleep = d3.sum(data, function(d) { return +d.sleep});
-    var work_act = d3.sum(data, function(d) { return +d.work_act});
-    var household = d3.sum(data, function(d) { return +d.household_combine});
-    var leisure = d3.sum(data, function(d) { return +d.Leisure_Combine});
-    var others = d3.sum(data, function(d) { return +d.Others});
-    return { "travel": travel, "sleep": sleep, "work": work_act,
-    "household": household, "leisure": leisure, "others": others };
+    var totalTime = data.length * 1440;
+    var travel = d3.sum(data, function(d) { return +d.travel}) / totalTime;
+    var sleep = d3.sum(data, function(d) { return +d.sleep}) / totalTime;
+    var work_act = d3.sum(data, function(d) { return +d.work_act}) / totalTime;
+    var household = d3.sum(data, function(d) { return +d.household_combine}) / totalTime;
+    var leisure = d3.sum(data, function(d) { return +d.Leisure_Combine}) / totalTime;
+    var others = d3.sum(data, function(d) { return +d.Others}) / totalTime;
+    // { "travel": travel, "sleep": sleep, "work": work_act,
+    // "household": household, "leisure": leisure, "others": others };
+    return [{label: "travel", value: travel},
+            {label: "sleep", value: sleep},
+            {label: "work", value: work_act},
+            {label: "household", value: household},
+            {label: "leisure", value: leisure},
+            {label: "others", value: others}
+            ];
 }
 
 // Return regression data, labels, max of x, max of y
