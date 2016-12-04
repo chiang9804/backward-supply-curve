@@ -51,6 +51,12 @@ body { font: 12px Arial;}
     background-color: LightGreen;
 }
 
+#part3-chart {
+    width: 60%;
+    height: 80%;
+    float:left;
+}
+
 /* Pie Chart */
 path.slice{
 	stroke-width:2px;

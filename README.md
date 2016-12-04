@@ -12,3 +12,4 @@ This repo is the source code for the [project.](https://docs.google.com/document
 ### Source
 * [d3.js](https://github.com/d3/d3)
 * [Tom-Alexander/regression-js](https://github.com/Tom-Alexander/regression-js)
+* [Donut Chart](http://bl.ocks.org/juan-cb/1984c7f2b446fffeedde)
