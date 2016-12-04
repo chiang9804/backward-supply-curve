@@ -5,12 +5,21 @@
 	<script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="./src/regression.js"></script>
     <link href="style.css" rel="stylesheet" type="text/css">
+    <script src="helperFunctions.js"></script>
 </head>
 <body>
 <div id="part1" class="part">
+    <div id="part1-left">
+    </div>
+    <div id="part1-right">
+    </div>
 </div>
 
 <div id="part2" class="part">
+    <div id="part2-left">
+    </div>
+    <div id="part2-right">
+    </div>
 </div>
 
 <div id="part3" class="part">
@@ -28,52 +37,125 @@ d3.csv(f, function(data) {
     plotPart3(data);
 });
 
+// d3.select(window).on('resize.updatesvg', updateWindow);
+// function updateWindow(){
+//     width = d3.select("#part2-right").node().getBoundingClientRect().width
+//     height = d3.select("#part2-right").node().getBoundingClientRect().height
+//     svg = d3.select("#part2-right").selectAll("svg")
+//     .attr("width", width).attr("height", height);
+//
+//     width = d3.select("#part1-left").node().getBoundingClientRect().width
+//     height = d3.select("#part2-right").node().getBoundingClientRect().height
+//     svg = d3.select("#part1-left").selectAll("svg")
+//     .attr("width", width).attr("height", height);
+// }
+
 function plotPart3(data) {
-    var margin = {top: 30, right: 20, bottom: 30, left: 50},
-    width = 600 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
-    var svg = d3.select("#part1")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+
 }
 
 function plotPart2(data) {
-    var svg = d3.select("#part1")
-        .append("svg");
+    var return_data = filterDataByKey(data, "partner");
+    var data_array = return_data[0];
+    var labels = return_data[1];
+    var maxX = return_data[2];
+    var maxY = return_data[3];
+
+    var div_node = d3.select("#part2-right").node()
+    console.log(div_node);
+    var margin = {top: 30, right: 50, bottom: 30, left: 50},
+    width = div_node.getBoundingClientRect().width,
+    height = div_node.getBoundingClientRect().height;
+    var svg = d3.select("#part2-right")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    plotMultipleData(svg, margin, data_array, maxX, maxY);
 }
 
-function plotMultipleData() {
+function plotMultipleData(svg, margin, data_array, maxX, maxY) {
+    var chart = svg.append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
 
+    var width = svg.node().getBoundingClientRect().width - margin.left - margin.right;
+    var height = svg.node().getBoundingClientRect().height - margin.top - margin.bottom;
+
+    // Set the ranges
+    var x = d3.scale.linear().range([0, width]);
+    var y = d3.scale.linear().range([height, 0]);
+
+    // Define the axes
+    var xAxis = d3.svg.axis().scale(x)
+        .orient("bottom").ticks(5);
+
+    var yAxis = d3.svg.axis().scale(y)
+        .orient("left").ticks(5);
+
+    // Define the line
+    var valueline = d3.svg.line()
+        .x(function(d) { return x(d[0]); })
+        .y(function(d) { return y(d[1]); })
+        .interpolate("basis");
+
+    // Scale the range of the data
+    x.domain([0, maxX]);
+    y.domain([0, maxY]);
+
+    // var color_code = ["LightPink", "LightBlue", "LightGreen", "LightGoldenRodYellow", "LightSalmon"];
+    // var line_color_code = ["red", "blue", "green", "yellow", "orange"];
+    var colorScale = d3.scale.category10();
+
+    for (var i in data_array) {
+        var line_data = data_array[i];
+        chart.append("path")
+            .attr("class", "line")
+            .attr("stroke", colorScale(i))
+            .attr("stroke-width", "2")
+            .attr("fill", "none")
+            .attr("d", valueline(line_data));
+    }
+
+    // Add the X Axis
+    chart.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    // Add the Y Axis
+    chart.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 }
 
 function plotPart1(data) {
     data_work_wage = data.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
-    // median_data = getMedianForY(data_work_wage);
-    // console.log(median_data);
-    reg_data = getRegressionDataForY(data_work_wage);
 
     // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 50},
-    width = 1000 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    var div_node = d3.select("#part1-left").node()
+    var margin = {top: 30, right: 50, bottom: 30, left: 50},
+    width = div_node.getBoundingClientRect().width
+    height = div_node.getBoundingClientRect().height;
 
     // Adds the svg canvas
-    var svg = d3.select("#part1")
+    var svg = d3.select("#part1-left")
         .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+        .attr("width", width)
+        .attr("height", height);
 
-    plotDataAndSupplyCurve(svg, width, height, data_work_wage, reg_data);
+    plotDataAndSupplyCurve(svg, margin, data_work_wage);
 }
 
-function plotDataAndSupplyCurve(svg, width, height, data, line_data) {
+function plotDataAndSupplyCurve(svg, margin, data) {
+    var line_data = getRegressionDataForY(data);
+    var chart = svg.append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+    var width = svg.node().getBoundingClientRect().width - margin.left - margin.right;
+    var height = svg.node().getBoundingClientRect().height - margin.top - margin.bottom;
+
     // Set the ranges
     var x = d3.scale.linear().range([0, width]);
     var y = d3.scale.linear().range([height, 0]);
@@ -96,7 +178,7 @@ function plotDataAndSupplyCurve(svg, width, height, data, line_data) {
     y.domain([0, d3.max(data, function(d) { return d[1]; })]);
 
     // Add the scatterplot
-    svg.selectAll("dot")
+    chart.selectAll("dot")
         .data(data)
       .enter().append("circle")
         .attr("r", 3.5)
@@ -104,68 +186,29 @@ function plotDataAndSupplyCurve(svg, width, height, data, line_data) {
         .attr("cy", function(d) { return y(d[1]); });
 
     // Add the valueline path.
-    svg.append("path")
+    chart.append("path")
         .attr("class", "line")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", "2")
+        .attr("fill", "none")
         .attr("d", valueline(line_data));
 
     // Add the X Axis
-    svg.append("g")
+    chart.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
     // Add the Y Axis
-    svg.append("g")
+    chart.append("g")
         .attr("class", "y axis")
         .call(yAxis);
 
 }
 
-function getRegressionDataForY(data) {
-    data = data.map(function(d) { return [ +d[1], +d[0] ]; });
-    xmax = d3.max(data, function(d) { return d[0]; });
-    var myRegression = regression('polynomial', data, degree);
-    var equation = myRegression.equation;
-    reg_data = [];
-    for (var x=0; x<xmax; ++x) {
-        var y = 0;
-        for(var i=0; i<equation.length; ++i) {
-            y += Math.pow(x, i) * equation[i];
-        }
-        reg_data.push([y, x]);
-    }
-    // console.log(reg_data);
-    return reg_data;
+function drawPie(svg, data) {
+
 }
 
-function getMedianForY(data) {
-    var xs_y = {};
-    for (var point of data) {
-        x = parseInt(point[0]);
-        y = parseInt(point[1]);
-        if (xs_y.hasOwnProperty(y)) {
-            xs_y[y][0].push(x);
-        } else {
-            xs_y[y] = [[x], y];
-        }
-    }
-    console.log(Object.keys(xs_y).length);
-
-    var median_data = [];
-    for (var key in xs_y) {
-        xs = xs_y[key][0];
-        y = xs_y[key][1];
-        xs.sort(sortInt);
-        median = xs[Math.floor(xs.length/2)];
-        if (median == undefined) {
-            console.log(xs);
-        }
-        // median_data.push([y, median]);
-        median_data.push([median, y]);
-    }
-    return median_data;
-}
-
-function sortInt(a,b) { return a - b; }
 </script>
 </html>

@@ -1,10 +1,5 @@
 body { font: 12px Arial;}
 
-path {
-    stroke: steelblue;
-    stroke-width: 2;
-    fill: none;
-}
 .axis path,
 .axis line {
     fill: none;
@@ -20,10 +15,36 @@ path {
 
 #part1 {
     background-color: LightSkyBlue;
+    position: relative;
+}
+
+#part1-left {
+    width:49%;
+    float:left;
+    height:100%;
+}
+
+#part1-right {
+    width:49%;
+    float:right;
+    height:100%;
 }
 
 #part2 {
-    background-color: LightPink;
+    text-align: center;
+    position: relative;
+}
+
+#part2-left {
+    width:49%;
+    float:left;
+    height:100%;
+}
+
+#part2-right {
+    width:49%;
+    float:right;
+    height:100%;
 }
 
 #part3 {
