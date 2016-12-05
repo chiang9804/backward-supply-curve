@@ -1,4 +1,46 @@
-body { font: 12px Arial;}
+body {
+  /*font: 12px Arial;*/
+  font-family: 'Amatic SC', cursive;
+  font-family: 'Raleway', sans-serif;
+  background-color: rgb(245, 242, 230);
+}
+h1{
+  font: 60px Amatic SC;
+  color: #d16558;
+}
+h2{
+  font: 40px Amatic SC;
+  color: #6fa188;
+}
+p{
+  line-height: 1.5;
+}
+blockquote {
+  font: 25px Amatic SC;
+  margin: 0em 5px;
+  padding: 0.5em 5px;
+  color: #e2a378;
+  /*quotes: "\201C""\201D""\2018""\2019";*/
+}
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
+}
+
+.container{
+  width: 80%;
+  margin: 0 auto;
+}
+.part2_radio{
+  line-height: 1.5;
+}
 
 .axis path,
 .axis line {
@@ -9,52 +51,60 @@ body { font: 12px Arial;}
 }
 
 .part {
-    width: 100vw;
-    height: 80vh;
+    width: 75vw;
+    height: 110vh;
 }
 
 #part1 {
-    background-color: AliceBlue;
+    border-color: rgba(96, 236, 114, 0.3);
+    border-top-style: dotted;
+    border-right-style: dotted;
+    border-bottom-style: dotted;
+    border-left-style: dotted;
     position: relative;
 }
 
 #part1-left {
     width:49%;
     float:left;
-    height:100%;
+    height:60%;
 }
 
 #part1-right {
     width:49%;
     float:right;
-    height:100%;
+    height:80%;
 }
 
 #part2 {
-    text-align: center;
+    text-align: left;
     position: relative;
 }
 
 #part2-left {
-    width:49%;
+    width:40%;
     float:left;
     height:100%;
 }
 
 #part2-right {
-    width:49%;
+    width:60%;
     float:right;
-    height:100%;
+    height:90%;
 }
 
 #part3 {
-    background-color: LightGreen;
+    border-color: rgba(236, 185, 96, 0.3);
+    border-top-style: solid;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
 }
 
 #part3-chart {
     width: 60%;
-    height: 80%;
-    float:left;
+    height: 60%;
+    float:center;
 }
 
 /* Pie Chart */
