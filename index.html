@@ -3,28 +3,66 @@
 <head>
 	<meta charset="utf-8" />
 	<script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="./src/regression.js"></script>
-    <link href="style.css" rel="stylesheet" type="text/css">
-    <script src="helperFunctions.js"></script>
+  <script src="./src/regression.js"></script>
+	<script src="helperFunctions.js"></script>
+	<!-- Styling -->
+	<link href="style.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Amatic+SC:700|Raleway:300,400" rel="stylesheet">
+
+	<!-- <link rel="stylesheet" href="bootstrap-select.min.css">
+	<script src=”src/bootstrap.min.js”></script> -->
+
+	<!-- <link rel=”stylesheet” href=”bootstrap.min.css”> -->
+	<!-- <script src="src/bootstrap-select.js"></script> -->
+
+	<!-- <script src="src/jquery-3.1.1.min.js"></script>
+	<link href="skins/square/green.css" rel="stylesheet">
+	<script src="src/icheck.js"></script>
+
+	<script>
+	$(document).ready(function(){
+	  $('input').iCheck({
+	    // checkboxClass: 'icheckbox_square-green',
+	    radioClass: 'iradio_square-green',
+	    // increaseArea: '20%' // optional
+	  });
+	});
+	</script> -->
+
 </head>
 <body>
+<div class="container">
+<h1>Reflection on Thy Own Life</h1>
+<blockquote>We are all mortals, and each is for himself. - Molière</blockquote>
+<p>When we are swamped up in our daily turmoils with the ups and downs, the fun and boredom, the happy and sad, have you ever wondered if you are doing okay compared with others? Did you put your time and efforts in the right place? Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studies/36268" target="_blank">American Time Use Survey</a>, we present to you a discovery journey on how your American counterparts utilize their time. Through your own self-reflection, you could learn about how to make proper adjustments and then lead a fulfilling life.</p>
 <div id="part1" class="part">
+	<h2>How Americans Spend Their Time</h2>
+	<p>On the left-hand side, we recreated the labor supply curve in economics. The x-axis represents "weekly working hours" and the y-axis represents "hourly wage". Every data point is one person's response, and the trend line is the supply curve. Right-hand side is a pie chart visualizing how Americans spend their time on five main categories of activities.</p>
     <div id="part1-left">
     </div>
     <div id="part1-right">
     </div>
 </div>
 
-<div id="part2" class="part">
+<h2>Filter and See How Trend Lines Change</h2>
+<p>Every criteria could be a determining factor to how the data disbributes. Explore and see.</p>
+<div id="part2" class="part" style="height:80vh">
     <div id="part2-left">
         <form>
-            <input class="part2_radio" type="radio" name="radio-group" value="Gender" checked>Gender
-            <input class="part2_radio" type="radio" name="radio-group" value="age_group">Age
-            <input class="part2_radio" type="radio" name="radio-group" value="education_category">Education
-            <input class="part2_radio" type="radio" name="radio-group" value="metropolitan_category">Lived in City or Rural area
-            <input class="part2_radio" type="radio" name="radio-group" value="partner_category">Lived with partners
-            <input class="part2_radio" type="radio" name="radio-group" value="child_num">Numbers of Children
-            <input class="part2_radio" type="radio" name="radio-group" value="year">Year
+            <input class="part2_radio" type="radio" name="radio-group" value="Gender" checked>Gender<br>
+						<!-- <label for="Gender">Gender</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="age_group">Age<br>
+						<!-- <label for="Age">Age</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="education_category">Education<br>
+						<!-- <label for="Education">Education</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="metropolitan_category">Urban/Rural Residents<br>
+						<!-- <label for="metropolitan">Urban/Rural Residents</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="partner_category">Living with Partner(s)<br>
+						<!-- <label for="partner">Living with Partner(s)</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="child_num">Number of Children<br>
+						<!-- <label for="child">Number of Children</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="year">Year<br>
+						<!-- <label for="year">Year</label> -->
         </form>
     </div>
     <div id="part2-right">
@@ -32,8 +70,10 @@
 </div>
 
 <div id="part3" class="part">
+	<h2>What about Me?</h2>
+	<p>Fill in your condition and spot your position compared with others.</p>
     <div class="filterpanel">
-        <div style="float:left">
+        <div style="display:inline-table">
             <p>Gender</p>
             <select id="part3_select_gender">
               <option value="0">-- --</option>
@@ -41,7 +81,8 @@
               <option value="Male">Male</option>
             </select>
         </div>
-        <div style="float:left">
+
+        <div style="display:inline-table; margin-left: 10px">
             <p>Age</p>
             <select id="part3_select_age">
               <option value="0">-- --</option>
@@ -54,7 +95,7 @@
             </select>
         </div>
 
-        <div style="float:left">
+        <div style="display:inline-table; margin-left: 10px">
             <p>Education</p>
             <select id="part3_select_education">
               <option value="0">-- --</option>
@@ -67,24 +108,25 @@
             </select>
         </div>
 
-        <div style="float:left">
+        <div style="display:inline-table; margin-left: 10px">
             <p>Weekly work hours:</p>
             <input type="text" name="work_hr" placeholder="Your weekly work hours" id="part3_input_work">
         </div>
-        <div style="float:left">
+
+        <div style="display:inline-table; margin-left: 10px">
             <p>Hourly wage:</p>
         <input type="text" name="hr_wage" placeholder="Your hourly wage" id="part3_input_wage">
         </div>
-        <div>
-            <br>
-            <br>
-            <br>
-            <button id="part3_update">Update</button>
+        <div style="display:inline-table; margin-left: 10px; padding-top: 40px">
+            <br><br>
+						<button id="part3_update">Update</button>
         </div>
     </div>
     <div id="part3-chart">
 
     </div>
+</div>
+
 </div>
 </body>
 <script>
