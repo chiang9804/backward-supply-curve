@@ -12,9 +12,10 @@
 	<!-- <link rel="stylesheet" href="bootstrap-select.min.css">
 	<script src=”src/bootstrap.min.js”></script> -->
 
-	<!-- <link rel=”stylesheet” href=”bootstrap.min.css”> -->
-	<!-- <script src="src/bootstrap-select.js"></script> -->
+	<!-- <link rel=”stylesheet” href=”bootstrap.min.css”>
+	<script src="src/bootstrap-select.js"></script> -->
 
+<!-- Radio button styling -->
 	<!-- <script src="src/jquery-3.1.1.min.js"></script>
 	<link href="skins/square/green.css" rel="stylesheet">
 	<script src="src/icheck.js"></script>
@@ -111,7 +112,7 @@
         </div>
 
         <div style="display:inline-table; margin-left: 10px">
-            <p>Weekly work hours</p>
+            <p>Weekly working hours</p>
             <input type="text" name="work_hr" size="30" placeholder="Type in your weekly work hours" id="part3_input_work">
         </div>
 
@@ -280,8 +281,14 @@ function plotPart2(data) {
         .attr("width", width)
         .attr("height", height);
 
+		// console.log(d3.selectAll('.iradio_square-green').selectAll(this.childNodes));
+		console.log(d3.selectAll('.part2_radio'));
+		console.log(d3.select('input[name="radio-group"]:checked'));
+		console.log(d3.select('input[name="radio-group"]:checked').node());
+		console.log(d3.select('input[name="radio-group"]:checked').node().value);
+
     d3.selectAll('.part2_radio').on("change",function(){
-        var selectedRadio=d3.select('input[name="radio-group"]:checked').node().value
+        var selectedRadio=d3.select('input[name="radio-group"]:checked').node().value;
 
         var return_data = filterDataByKey(data, selectedRadio);
         var data_array = return_data[0];
