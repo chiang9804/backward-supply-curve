@@ -12,9 +12,10 @@
 	<!-- <link rel="stylesheet" href="bootstrap-select.min.css">
 	<script src=”src/bootstrap.min.js”></script> -->
 
-	<!-- <link rel=”stylesheet” href=”bootstrap.min.css”> -->
-	<!-- <script src="src/bootstrap-select.js"></script> -->
+	<!-- <link rel=”stylesheet” href=”bootstrap.min.css”>
+	<script src="src/bootstrap-select.js"></script> -->
 
+<!-- Radio button styling -->
 	<!-- <script src="src/jquery-3.1.1.min.js"></script>
 	<link href="skins/square/green.css" rel="stylesheet">
 	<script src="src/icheck.js"></script>
@@ -33,8 +34,13 @@
 <body>
 <div class="container">
 <h1>Reflection on Thy Own Life</h1>
+<h2>How Americans Live Their Lives and the Effects of Wage Rate</h2>
 <blockquote>We are all mortals, and each is for himself. - Molière</blockquote>
-<p>When we are swamped up in our daily turmoils with the ups and downs, the fun and boredom, the happy and sad, have you ever wondered if you are doing okay compared with others? Did you put your time and efforts in the right place? Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studies/36268" target="_blank">American Time Use Survey</a>, we present to you a discovery journey on how your American counterparts utilize their time. Through your own self-reflection, you could learn about how to make proper adjustments and then lead a fulfilling life.</p>
+<p style="width:75%; display:inline-block">When we are swamped up in our daily turmoils with the ups and downs, the fun and boredom, the happy and sad, have you ever wondered if you are doing okay compared with others? Did you put your time and efforts in the right place?
+<br>
+Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studies/36268" target="_blank">American Time Use Survey</a>, we present to you a discovery journey on how your American counterparts utilize their time. Through your own self-reflection, you could learn about how to make proper adjustments and then lead a fulfilling life.</p>
+<img src="figure.png" style="width:10%; display:inline-block; margin-left: 3em">
+
 <div id="part1" class="part">
 	<h2>How Americans Spend Their Time</h2>
 	<p>On the left-hand side, we recreated the labor supply curve in economics. The x-axis represents "weekly working hours" and the y-axis represents "hourly wage". Every data point is one person's response, and the trend line is the supply curve. Right-hand side is a pie chart visualizing how Americans spend their time on five main categories of activities.</p>
@@ -45,10 +51,10 @@
 </div>
 
 <h2>Filter and See How Trend Lines Change</h2>
-<p>Every criteria could be a determining factor to how the data disbributes. Explore and see.</p>
+<p>Every criteria could be a determining factor for how the data disbributes. Explore and see.</p>
 <div id="part2" class="part" style="height:80vh">
     <div id="part2-left">
-        <form>
+        <form style="line-height: 2">
             <input class="part2_radio" type="radio" name="radio-group" value="Gender" checked>Gender<br>
 						<!-- <label for="Gender">Gender</label><br> -->
             <input class="part2_radio" type="radio" name="radio-group" value="age_group">Age<br>
@@ -71,12 +77,12 @@
 
 <div id="part3" class="part">
 	<h2>What about Me?</h2>
-	<p>Fill in your condition and spot your position compared with others.</p>
+	<p>Fill in your condition and spot your position compared with others similar to you.</p>
     <div class="filterpanel">
         <div style="display:inline-table">
             <p>Gender</p>
             <select id="part3_select_gender">
-              <option value="0">-- --</option>
+              <option value="0">All</option>
               <option value="Female">Female</option>
               <option value="Male">Male</option>
             </select>
@@ -85,7 +91,7 @@
         <div style="display:inline-table; margin-left: 10px">
             <p>Age</p>
             <select id="part3_select_age">
-              <option value="0">-- --</option>
+              <option value="0">All</option>
               <option value="under 20">under 20</option>
               <option value="20-29">20-29</option>
               <option value="30-39">30-39</option>
@@ -98,7 +104,7 @@
         <div style="display:inline-table; margin-left: 10px">
             <p>Education</p>
             <select id="part3_select_education">
-              <option value="0">-- --</option>
+              <option value="0">All</option>
               <option value="Primary School">Primary School</option>
               <option value="High School">High School</option>
               <option value="GED">GED</option>
@@ -109,13 +115,13 @@
         </div>
 
         <div style="display:inline-table; margin-left: 10px">
-            <p>Weekly work hours:</p>
-            <input type="text" name="work_hr" placeholder="Your weekly work hours" id="part3_input_work">
+            <p>Weekly working hours</p>
+            <input type="text" name="work_hr" size="30" placeholder="Type in your weekly work hours" id="part3_input_work">
         </div>
 
         <div style="display:inline-table; margin-left: 10px">
-            <p>Hourly wage:</p>
-        <input type="text" name="hr_wage" placeholder="Your hourly wage" id="part3_input_wage">
+            <p>Hourly wage</p>
+        <input type="text" name="hr_wage" placeholder="Type in your hourly wage" id="part3_input_wage" size="25">
         </div>
         <div style="display:inline-table; margin-left: 10px; padding-top: 40px">
             <br><br>
@@ -278,8 +284,14 @@ function plotPart2(data) {
         .attr("width", width)
         .attr("height", height);
 
+		// console.log(d3.selectAll('.iradio_square-green').selectAll(this.childNodes));
+		console.log(d3.selectAll('.part2_radio'));
+		console.log(d3.select('input[name="radio-group"]:checked'));
+		console.log(d3.select('input[name="radio-group"]:checked').node());
+		console.log(d3.select('input[name="radio-group"]:checked').node().value);
+
     d3.selectAll('.part2_radio').on("change",function(){
-        var selectedRadio=d3.select('input[name="radio-group"]:checked').node().value
+        var selectedRadio=d3.select('input[name="radio-group"]:checked').node().value;
 
         var return_data = filterDataByKey(data, selectedRadio);
         var data_array = return_data[0];
