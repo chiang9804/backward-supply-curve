@@ -3,8 +3,9 @@
 <head>
 	<meta charset="utf-8" />
 	<script src="http://d3js.org/d3.v3.min.js"></script>
-  <script src="./src/regression.js"></script>
+  	<script src="./src/regression.js"></script>
 	<script src="helperFunctions.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js" type="text/javascript"></script>
 	<!-- Styling -->
 	<link href="style.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Amatic+SC:700|Raleway:300,400" rel="stylesheet">
@@ -43,7 +44,7 @@ Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studie
 
 <div id="part1" class="part">
 	<h2>How Americans Spend Their Time</h2>
-	<p>On the left-hand side, we recreated the labor supply curve in economics. The x-axis represents "weekly working hours" and the y-axis represents "hourly wage". Every data point is one person's response, and the trend line is the supply curve. Right-hand side is a pie chart visualizing how Americans spend their time on five main categories of activities.</p>
+	<p>On the left-hand side, we recreated the labor supply curve in economics. The x-axis represents "Weekly working hours" and the y-axis represents "hourly wage". Every data point is one person's response, and the trend line is the supply curve. Right-hand side is a pie chart visualizing how Americans spend their time on five main categories of activities.</p>
     <div id="part1-left">
     </div>
     <div id="part1-right">
@@ -128,7 +129,10 @@ Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studie
 						<button id="part3_update">Update</button>
         </div>
     </div>
-    <div id="part3-chart">
+    <div id="part3-left">
+
+    </div>
+	<div id="part3-right">
 
     </div>
 </div>
@@ -161,13 +165,13 @@ d3.csv(f, function(data) {
 function plotPart3(data){
 
     // Set the dimensions of the canvas / graph
-    var div_node = d3.select("#part3-chart").node()
-    var margin = {top: 30, right: 50, bottom: 30, left: 50},
+    var div_node = d3.select("#part3-left").node()
+    var margin = {top: 100, right: 100, bottom: 100, left: 100},
     width = div_node.getBoundingClientRect().width
     height = div_node.getBoundingClientRect().height;
 
     // Adds the svg canvas
-    var svg = d3.select("#part3-chart")
+    var svg = d3.select("#part3-left")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
@@ -244,12 +248,12 @@ function plotFilteredData(svg, margin, data, user_data) {
         .attr("cy", function(d) { return y(d[1]); });
 
     // Add the valueline path.
-    chart.append("path")
-        .attr("class", "line")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", "2")
-        .attr("fill", "none")
-        .attr("d", valueline(line_data));
+    // chart.append("path")
+    //     .attr("class", "line")
+    //     .attr("stroke", "steelblue")
+    //     .attr("stroke-width", "2")
+    //     .attr("fill", "none")
+    //     .attr("d", valueline(line_data));
 
     if(user_data !== undefined) {
         // Add the user data.
@@ -267,16 +271,25 @@ function plotFilteredData(svg, margin, data, user_data) {
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
+	chart.append("text")
+		.attr("text-anchor", "middle")
+		.attr("transform", "translate("+ (-margin.left/2) +","+ height/2+")rotate(-90)")
+		.text("Hourly wage rate (USD)")
+
     // Add the Y Axis
     chart.append("g")
         .attr("class", "y axis")
         .call(yAxis);
 
+	chart.append("text")
+		.attr("text-anchor", "middle")
+		.attr("transform", "translate("+ (width/2) +","+ (height+(margin.bottom/2))+ ")")
+		.text("Weekly working hours (hr)")
 }
 
 function plotPart2(data) {
     var div_node = d3.select("#part2-right").node()
-    var margin = {top: 30, right: 50, bottom: 30, left: 50},
+    var margin = {top: 100, right: 100, bottom: 100, left: 100},
     width = div_node.getBoundingClientRect().width,
     height = div_node.getBoundingClientRect().height;
     var svg = d3.select("#part2-right")
@@ -358,18 +371,27 @@ function plotMultipleData(svg, margin, data_array, maxX, maxY) {
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
+	chart.append("text")
+		.attr("text-anchor", "middle")
+		.attr("transform", "translate("+ (-margin.left/2) +","+ height/2+")rotate(-90)")
+		.text("Hourly wage rate (USD)")
+
     // Add the Y Axis
     chart.append("g")
         .attr("class", "y axis")
         .call(yAxis);
+
+	chart.append("text")
+		.attr("text-anchor", "middle")
+		.attr("transform", "translate("+ (width/2) +","+ (height+(margin.bottom/2))+ ")")
+		.text("Weekly working hours (hr)")
 }
 
 function plotPart1(data) {
-    data_work_wage = data.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
 
     // Set the dimensions of the canvas / graph
     var div_node = d3.select("#part1-left").node()
-    var margin = {top: 30, right: 100, bottom: 30, left: 100},
+    var margin = {top: 100, right: 100, bottom: 100, left: 100},
     width = div_node.getBoundingClientRect().width
     height = div_node.getBoundingClientRect().height;
 
@@ -379,7 +401,7 @@ function plotPart1(data) {
         .attr("width", width)
         .attr("height", height);
 
-    plotDataAndSupplyCurve(svg, margin, data_work_wage);
+    plotDataAndSupplyCurve(svg, margin, data);
 
     var pieSvg = d3.select("#part1-right")
         .append("svg")
@@ -391,7 +413,10 @@ function plotPart1(data) {
 
 // data should in [[x1, y1], [x2, y2], ...]
 function plotDataAndSupplyCurve(svg, margin, data) {
-    var line_data = getRegressionDataForY(data);
+	var data_subsample = _.sample(data, 1500);
+	var data_work_wage = data_subsample.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
+
+	var line_data = getRegressionDataForY(data_work_wage);
     var chart = svg.append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
@@ -416,17 +441,26 @@ function plotDataAndSupplyCurve(svg, margin, data) {
         .y(function(d) { return y(d[1]); })
         .interpolate("basis");
 
+	var brush = d3.svg.brush()
+		.x(x)
+		.y(y)
+		.on("brushstart", brushstart)
+		.on("brush", brushmove)
+		.on("brushend", brushend);
+
     // Scale the range of the data
-    x.domain([0, d3.max(data, function(d) { return d[0]; })]);
-    y.domain([0, d3.max(data, function(d) { return d[1]; })]);
+    x.domain([0, d3.max(data_work_wage, function(d) { return d[0]; })]);
+    y.domain([0, d3.max(data_work_wage, function(d) { return d[1]; })]);
 
     // Add the scatterplot
     chart.selectAll("dot")
-        .data(data)
+        .data(data_work_wage)
       .enter().append("circle")
         .attr("r", 3.5)
         .attr("cx", function(d) { return x(d[0]); })
         .attr("cy", function(d) { return y(d[1]); });
+
+	chart.data(data_work_wage).call(brush);
 
     // Add the valueline path.
     chart.append("path")
@@ -442,11 +476,61 @@ function plotDataAndSupplyCurve(svg, margin, data) {
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
+	chart.append("text")
+		.attr("text-anchor", "middle")
+		.attr("transform", "translate("+ (-margin.left/2) +","+ height/2+")rotate(-90)")
+		.text("Hourly wage rate (USD)")
+
     // Add the Y Axis
     chart.append("g")
         .attr("class", "y axis")
         .call(yAxis);
 
+	chart.append("text")
+		.attr("text-anchor", "middle")
+		.attr("transform", "translate("+ (width/2) +","+ (height+(margin.bottom/2))+ ")")
+		.text("Weekly working hours (hr)")
+
+	var brushCell;
+	function brushstart(p) {
+		if (brushCell !== this) {
+			d3.select(brushCell).call(brush.clear());
+			brushCell = this;
+		}
+	}
+
+	// Highlight the selected circles.
+	function brushmove(p) {
+		var e = brush.extent(); //this is the brush object that was initialized above as 'brush'
+		// data_work_wage = data.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
+
+		chart.selectAll("circle").classed("hidden", function(d) {
+			return e[0][0] > d[0] || d[0] > e[1][0]
+				|| e[0][1] > d[1] || d[1] > e[1][1];
+		});
+
+		selectedData = [];
+		chart.selectAll("circle")
+			.each(function(d,i) {
+				if(!d3.select(this).classed("hidden")) {
+					selectedData.push(data_subsample[i]);
+				}
+			});
+
+		var div_node = d3.select("#part1-left").node()
+		var margin = {top: 100, right: 100, bottom: 100, left: 100},
+		width = div_node.getBoundingClientRect().width
+		height = div_node.getBoundingClientRect().height;
+		var pieSvg = d3.select("#part1-right").select("svg");
+		pieSvg.selectAll("*").remove();
+		drawPie(pieSvg, margin, selectedData);
+	}
+
+	// If the brush is empty, select all circles.
+	function brushend() {
+		selectedData = [];
+	 	if (brush.empty()) chart.selectAll(".hidden").classed("hidden", false);
+	}
 }
 
 function drawPie(svg, margin, data) {

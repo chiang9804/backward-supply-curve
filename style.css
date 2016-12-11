@@ -99,12 +99,19 @@ blockquote p {
     border-right-style: solid;
     border-bottom-style: solid;
     border-left-style: solid;
+    position: relative;
 }
 
-#part3-chart {
-    width: 60%;
-    height: 60%;
-    float:center;
+#part3-left {
+    width:49%;
+    float:left;
+    height:60%;
+}
+
+#part3-right {
+    width:49%;
+    float:right;
+    height:60%;
 }
 
 /* Pie Chart */
@@ -125,4 +132,20 @@ polyline{
 
 text {
   font: 12px sans-serif;
+}
+
+/* brush tool */
+
+circle {
+  fill-opacity: .7;
+}
+
+circle.hidden {
+  fill: #ccc !important;
+}
+
+.extent {
+  fill: #000;
+  fill-opacity: .125;
+  stroke: #fff;
 }
