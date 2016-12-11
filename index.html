@@ -154,6 +154,10 @@ Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studie
 </div>
 </body>
 <script>
+var circleR=4;
+var circleRHoever=7;
+
+
 var f = "./data/data_full-time_category.csv"
 var degree = 3; // degree of regression
 
@@ -178,11 +182,17 @@ d3.csv(f, function(data) {
 
 function plotPart3(data){
 
+
     // Set the dimensions of the canvas / graph
-    var div_node = d3.select("#part3-left").node()
+    var div_node = d3.select("#part3-left").node();
     var margin = {top: 100, right: 100, bottom: 100, left: 100},
     width = div_node.getBoundingClientRect().width
     height = div_node.getBoundingClientRect().height;
+
+    var pieSvg = d3.select("#part3-right")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
     // Adds the svg canvas
     var svg = d3.select("#part3-left")
@@ -200,6 +210,8 @@ function plotPart3(data){
         var wage=d3.select("#part3_input_wage").node().value;
 
         var filtered_data=data.filter(checkDemographic);
+        var filtered_data_sample=_.sample(filtered_data,100);
+
 
         function checkDemographic(d){
             return (d.Gender==gender || gender=="0") &&
@@ -207,17 +219,74 @@ function plotPart3(data){
             (d.education_category==education || education=="0");
         }
 
-        var data_work_wage = filtered_data.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
+        var data_work_wage = filtered_data_sample.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
 
         svg.selectAll("*").remove();
 		var user_data = undefined;
 		if (work_hr !== undefined && wage !== undefined && work_hr !== "" && wage !== "") user_data = [work_hr, wage];
         plotFilteredData(svg, margin, data_work_wage, user_data);
 
+        pieSvg.selectAll("*").remove();
+        drawPie(pieSvg, margin, filtered_data_sample);
+
+        d3.select("#part3-left").selectAll("circle").on("mouseover",function(d, i){
+
+        pieSvg.selectAll("*").remove();
+
+        drawPie(pieSvg, margin, [filtered_data_sample[i]]);
+        d3.select("#part3-left").selectAll(".piecircle")
+         .attr("r", function(dd,ii) {
+            if (ii==i) {
+                return circleRHoever;
+            } else {
+                return circleR;
+            } 
+            
+        })
+         .attr("fill", function(dd,ii) {
+            if (ii==i) {
+                return "lightblue";
+            } else {
+                return "black";
+            } 
+            
+        });
+
     });
 
-    var data_work_wage = data.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
+
+    });
+    var data_sample=_.sample(data,1500);
+    var data_work_wage = data_sample.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
     plotFilteredData(svg, margin, data_work_wage, undefined);
+    drawPie(pieSvg, margin, data_sample);
+
+
+    d3.select("#part3-left").selectAll(".piecircle").on("mouseover",function(d, i){
+        pieSvg.selectAll("*").remove();
+         drawPie(pieSvg, margin, [data_sample[i]]);
+
+         d3.select("#part3-left").selectAll(".piecircle")
+         .attr("r", function(dd,ii) {
+            if (ii==i) {
+                return circleRHoever;
+            } else {
+                return circleR;
+            } 
+            
+        })
+         .attr("fill", function(dd,ii) {
+            if (ii==i) {
+                return "lightblue";
+            } else {
+                return "black";
+            } 
+            
+        });
+
+    });
+
+
 }
 
 // data should in [[x1, y1], [x2, y2], ...]
@@ -257,7 +326,8 @@ function plotFilteredData(svg, margin, data, user_data) {
     chart.selectAll("dot")
         .data(data)
       .enter().append("circle")
-        .attr("r", 3.5)
+      .attr("class","piecircle")
+        .attr("r", circleR)
         .attr("cx", function(d) { return x(d[0]); })
         .attr("cy", function(d) { return y(d[1]); });
 
@@ -272,7 +342,7 @@ function plotFilteredData(svg, margin, data, user_data) {
     if(user_data !== undefined) {
         // Add the user data.
         chart.append("circle")
-            .attr("r", 6)
+            .attr("r", circleRHoever)
             .attr("fill", "red")
             .attr("cx", x(user_data[0]))
             .attr("cy", y(user_data[1]));
@@ -302,7 +372,7 @@ function plotFilteredData(svg, margin, data, user_data) {
 }
 
 function plotPart2(data) {
-    var div_node = d3.select("#part2-right").node()
+    var div_node = d3.select("#part2-left").node()
     var margin = {top: 100, right: 100, bottom: 100, left: 100},
     width = div_node.getBoundingClientRect().width,
     height = div_node.getBoundingClientRect().height;
@@ -311,11 +381,6 @@ function plotPart2(data) {
         .attr("width", width)
         .attr("height", height);
 
-		// console.log(d3.selectAll('.iradio_square-green').selectAll(this.childNodes));
-		console.log(d3.selectAll('.part2_radio'));
-		console.log(d3.select('input[name="radio-group"]:checked'));
-		console.log(d3.select('input[name="radio-group"]:checked').node());
-		console.log(d3.select('input[name="radio-group"]:checked').node().value);
 
     d3.selectAll('.part2_radio').on("change",function(){
         var selectedRadio=d3.select('input[name="radio-group"]:checked').node().value;
@@ -470,7 +535,7 @@ function plotDataAndSupplyCurve(svg, margin, data) {
     chart.selectAll("dot")
         .data(data_work_wage)
       .enter().append("circle")
-        .attr("r", 3.5)
+        .attr("r", circleR)
         .attr("cx", function(d) { return x(d[0]); })
         .attr("cy", function(d) { return y(d[1]); });
 
