@@ -12,13 +12,13 @@
 
 	<!-- <link rel="stylesheet" href="bootstrap-select.min.css">
 	<script src=”src/bootstrap.min.js”></script> -->
-
-	<!-- <link rel=”stylesheet” href=”bootstrap.min.css”>
+<!--     <script src="src/jquery-3.1.1.min.js"></script>
+    	<link rel=”stylesheet” href=”bootstrap.min.css”>
 	<script src="src/bootstrap-select.js"></script> -->
 
 <!-- Radio button styling -->
-	<!-- <script src="src/jquery-3.1.1.min.js"></script>
-	<link href="skins/square/green.css" rel="stylesheet">
+
+<!-- 	<link href="skins/square/green.css" rel="stylesheet">
 	<script src="src/icheck.js"></script>
 
 	<script>
@@ -54,23 +54,37 @@ Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studie
 <h2>Filter and See How Trend Lines Change</h2>
 <p>Every criteria could be a determining factor for how the data disbributes. Explore and see.</p>
 <div id="part2" class="part" style="height:80vh">
-    <div id="part2-left">
         <form style="line-height: 2">
+            <input class="part2_radio" type="radio" name="radio-group" value="Gender" checked>Gender
+                        <!-- <label for="Gender">Gender</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="age_group">Age
+                        <!-- <label for="Age">Age</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="education_category">Education
+                        <!-- <label for="Education">Education</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="metropolitan_category">Urban/Rural Residents
+                        <!-- <label for="metropolitan">Urban/Rural Residents</label><br> -->
+            <input class="part2_radio" type="radio" name="radio-group" value="partner_category">Living with Partner(s)
+                        <!-- <label for="partner">Living with Partner(s)</label><br> -->
+
+            <input class="part2_radio" type="radio" name="radio-group" value="year">Year
+                        <!-- <label for="year">Year</label> -->
+        </form>
+    <div id="part2-left">
+<!--         <form style="line-height: 2">
             <input class="part2_radio" type="radio" name="radio-group" value="Gender" checked>Gender<br>
 						<!-- <label for="Gender">Gender</label><br> -->
-            <input class="part2_radio" type="radio" name="radio-group" value="age_group">Age<br>
+<!--             <input class="part2_radio" type="radio" name="radio-group" value="age_group">Age<br>
 						<!-- <label for="Age">Age</label><br> -->
-            <input class="part2_radio" type="radio" name="radio-group" value="education_category">Education<br>
+<!--             <input class="part2_radio" type="radio" name="radio-group" value="education_category">Education<br> -->
 						<!-- <label for="Education">Education</label><br> -->
-            <input class="part2_radio" type="radio" name="radio-group" value="metropolitan_category">Urban/Rural Residents<br>
+            <!-- <input class="part2_radio" type="radio" name="radio-group" value="metropolitan_category">Urban/Rural Residents<br> -->
 						<!-- <label for="metropolitan">Urban/Rural Residents</label><br> -->
-            <input class="part2_radio" type="radio" name="radio-group" value="partner_category">Living with Partner(s)<br>
+           <!--  <input class="part2_radio" type="radio" name="radio-group" value="partner_category">Living with Partner(s)<br> -->
 						<!-- <label for="partner">Living with Partner(s)</label><br> -->
-            <input class="part2_radio" type="radio" name="radio-group" value="child_num">Number of Children<br>
-						<!-- <label for="child">Number of Children</label><br> -->
-            <input class="part2_radio" type="radio" name="radio-group" value="year">Year<br>
+
+<!--             <input class="part2_radio" type="radio" name="radio-group" value="year">Year<br> --> 
 						<!-- <label for="year">Year</label> -->
-        </form>
+<!--         </form> --> 
     </div>
     <div id="part2-right">
     </div>
@@ -292,7 +306,7 @@ function plotPart2(data) {
     var margin = {top: 100, right: 100, bottom: 100, left: 100},
     width = div_node.getBoundingClientRect().width,
     height = div_node.getBoundingClientRect().height;
-    var svg = d3.select("#part2-right")
+    var svg = d3.select("#part2-left")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
