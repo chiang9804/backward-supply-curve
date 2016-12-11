@@ -523,7 +523,10 @@ function plotDataAndSupplyCurve(svg, margin, data) {
 		height = div_node.getBoundingClientRect().height;
 		var pieSvg = d3.select("#part1-right").select("svg");
 		pieSvg.selectAll("*").remove();
-		drawPie(pieSvg, margin, selectedData);
+        if(selectedData.length!==0){
+            drawPie(pieSvg, margin, selectedData);            
+        }
+
 	}
 
 	// If the brush is empty, select all circles.
