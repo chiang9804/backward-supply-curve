@@ -10,25 +10,32 @@ body {
 h1{
   font: 60px Amatic SC;
   color: #d16558;
+  margin-bottom: 0;
 }
 h2{
+  font: 50px Amatic SC;
+  color: #42282E;
+  margin: 0.1em 0;
+}
+h3{
   font: 40px Amatic SC;
   color: #6fa188;
 }
 p{
-  line-height: 1.5;
+  font-size: 1em;
+  line-height: 1.75;
 }
 blockquote {
-  font: 25px Amatic SC;
+  font: 2em Amatic SC;
   margin: 0em 5px;
-  padding: 0.5em 5px;
+  padding: 0.25em 5px;
   color: #e2a378;
   /*quotes: "\201C""\201D""\2018""\2019";*/
 }
 blockquote:before {
   color: #ccc;
   content: open-quote;
-  font-size: 4em;
+  font-size: 3em;
   line-height: 0.1em;
   margin-right: 0.25em;
   vertical-align: -0.4em;
@@ -55,7 +62,7 @@ blockquote p {
 
 .part {
     width: 75vw;
-    height: 110vh;
+    height: 100vh;
 }
 
 #part1 {

@@ -33,16 +33,32 @@
 </head>
 <body>
 <div class="container">
+<div id="part0" class="part">
+
 <h1>Reflection on Thy Own Life</h1>
 <h2>Effects of Wage Rate on How Americans Live Their Lives</h2>
 <blockquote>We are all mortals, and each is for himself. - Molière</blockquote>
 <p style="width:75%; display:inline-block">When we are swamped up in our daily turmoils with the ups and downs, the fun and boredom, the happy and sad, have you ever wondered if you are doing okay compared with others? Did you put your time and efforts in the right place?
 <br>
-Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studies/36268" target="_blank">American Time Use Survey</a>, we present to you a discovery journey on how your American counterparts utilize their time. Through your own self-reflection, you could learn about how to make proper adjustments and then lead a fulfilling life.</p>
-<img src="figure.png" style="width:10%; display:inline-block; margin-left: 3em">
+Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studies/36268" target="_blank">American Time Use Survey</a>, we present to you a discovery journey about the effects of wage rate on how your American counterparts utilize their time. Through your own self-reflection, you could gain insights about how Americans live their lives, start to contemplate on your own life,  make proper adjustments to your lifestyle and thus lead a fulfilling life.</p>
+<img src="figure.png" style="width:15%; display:inline-block; margin-left: 3em; margin-bottom: 1em">
+
+</div>
+
+<div id="intro" class="part">
+
+<h1>Reflection on Thy Own Life</h1>
+<h2>Effects of Wage Rate on How Americans Live Their Lives</h2>
+<blockquote>We are all mortals, and each is for himself. - Molière</blockquote>
+<p style="width:75%; display:inline-block">When we are swamped up in our daily turmoils with the ups and downs, the fun and boredom, the happy and sad, have you ever wondered if you are doing okay compared with others? Did you put your time and efforts in the right place?
+<br>
+Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studies/36268" target="_blank">American Time Use Survey</a>, we present to you a discovery journey on how your American counterparts utilize their time. Through your own self-reflection, you could learn about how to make proper adjustments to your lifestyle and lead a fulfilling life.</p>
+<img src="figure.png" style="width:10%; display:inline-block; margin-left: 3em; margin-bottom: 1em">
+
+</div>
 
 <div id="part1" class="part">
-	<h2>How Americans Spend Their Time</h2>
+	<h3>How Americans Spend Their Time</h3>
 	<p>On the left-hand side, we recreated the labor supply curve in economics. The x-axis represents "weekly working hours" and the y-axis represents "hourly wage". Every data point is one person's response, and the trend line is the supply curve. Right-hand side is a pie chart visualizing how Americans spend their time on five main categories of activities.</p>
     <div id="part1-left">
     </div>
@@ -50,7 +66,7 @@ Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studie
     </div>
 </div>
 
-<h2>Filter and See How Trend Lines Change</h2>
+<h3>Filter and See How Trend Lines Change</h3>
 <p>Every criteria could be a determining factor for how the data disbributes. Explore and see.</p>
 <div id="part2" class="part" style="height:80vh">
     <div id="part2-left">
@@ -76,7 +92,7 @@ Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studie
 </div>
 
 <div id="part3" class="part">
-	<h2>What about Me?</h2>
+	<h3>What about Me?</h3>
 	<p>Fill in your condition and spot your position compared with others similar to you.</p>
     <div class="filterpanel">
         <div style="display:inline-table">
@@ -140,9 +156,9 @@ var f = "./data/data_full-time_category.csv"
 var degree = 3; // degree of regression
 
 d3.csv(f, function(data) {
-    plotPart1(data);
-    plotPart2(data);
-    plotPart3(data);
+    // plotPart1(data);
+    // plotPart2(data);
+    // plotPart3(data);
 });
 
 // d3.select(window).on('resize.updatesvg', updateWindow);
