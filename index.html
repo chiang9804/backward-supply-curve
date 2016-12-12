@@ -299,7 +299,15 @@ function plotPart3(data){
 	                return "black";
 	            }
         	});
-    	});
+    	})
+        .on('mouseout', function(d,i){
+            pieSvg.selectAll("*").remove();
+            drawPie(pieSvg, margin, filtered_data_sample);  
+            d3.select("#part3-left").selectAll(".piecircle")
+             .attr("r", circleR)
+            .attr("fill", "black");  
+
+        });      
     });
     var data_sample=_.sample(data,1500);
     var data_work_wage = data_sample.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
@@ -326,24 +334,16 @@ function plotPart3(data){
                 return "black";
             }
 
-        });
+        });   
+    })
+    .on('mouseout', function(d,i){
+            pieSvg.selectAll("*").remove();
+            drawPie(pieSvg, margin, data_sample);
+            d3.select("#part3-left").selectAll(".piecircle")
+             .attr("r", circleR)
+            .attr("fill", "black");  
 
-        d3.select("#part3-left").selectAll(".piecircle")
-	        .attr("r", function(dd,ii) {
-	            if (ii==i) {
-	                return circleRHoever;
-	            } else {
-	                return circleR;
-	            }
-	        })
-	        .attr("fill", function(dd,ii) {
-	            if (ii==i) {
-	                return "lightblue";
-	            } else {
-	                return "black";
-	            }
-        	});
-    });
+    }); 
 }
 
 // data should in [[x1, y1], [x2, y2], ...]
