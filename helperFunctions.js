@@ -32,7 +32,14 @@ function filterDataByKey(data, key) {
     var line_data_array = [];
     var maxX = 0, maxY = 0, minX = 999999, minY = 999999, labels=[];
     var selectedData = data[key];
-    for (subgroup in selectedData) {
+    var subgroups = Object.keys(data[key]);
+    if (key == "age_group") {
+        subgroups = ["under 20", "20-29", "30-39", "40-49", "50-59", "over 60" ];
+    } else if (key == "education_category") {
+        subgroups = ["Primary School", "High School", "GED", "College", "Master", "PhD" ];
+    }
+    for (var index in subgroups) {
+        var subgroup = subgroups[index];
         pie_data_array.push(selectedData[subgroup]["pie_data"]);
         line_data = selectedData[subgroup]["line_data"];
         line_data_array.push(line_data);

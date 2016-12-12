@@ -822,7 +822,12 @@ function plotDataAndSupplyCurve(svg, margin, data, line_data) {
 	// If the brush is empty, select all circles.
 	function brushend() {
 		selectedData = [];
-	 	if (brush.empty()) chart.selectAll(".hidden").classed("hidden", false);
+	 	if (brush.empty()) {
+			chart.selectAll(".hidden").classed("hidden", false);
+			var pieSvg = d3.select("#part1-right").select("svg");
+			pieSvg.selectAll("*").remove();
+			drawPie(pieSvg, margin, data);
+		}
 	}
 }
 
