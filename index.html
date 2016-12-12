@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
   	<script src="./src/regression.js"></script>
 	<script src="helperFunctions.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js" type="text/javascript"></script>
@@ -159,17 +160,17 @@ var circleRHoever=7;
 
 
 var f = "./data/data_full-time_category.csv"
+var line_data_f = "./data/line_and_pie_data.json"
 var degree = 3; // degree of regression
 
 d3.csv(f, function(data) {
     plotPart1(data);
-    plotPart2(data);
+    // plotPart2(data);
     plotPart3(data);
 });
 
-var line_data_f = "./data/line_data_2.json"
 d3.json(line_data_f, function(data) {
-	newPlotPart2(data);
+	plotPart2(data);
 });
 
 // d3.select(window).on('resize.updatesvg', updateWindow);
@@ -217,7 +218,6 @@ function plotPart3(data){
         var filtered_data=data.filter(checkDemographic);
         var filtered_data_sample=_.sample(filtered_data,100);
 
-
         function checkDemographic(d){
             return (d.Gender==gender || gender=="0") &&
             (d.age_group==age || age=="0") &&
@@ -235,63 +235,50 @@ function plotPart3(data){
         drawPie(pieSvg, margin, filtered_data_sample);
 
         d3.select("#part3-left").selectAll("circle").on("mouseover",function(d, i){
-
-        pieSvg.selectAll("*").remove();
-
-        drawPie(pieSvg, margin, [filtered_data_sample[i]]);
-        d3.select("#part3-left").selectAll(".piecircle")
-         .attr("r", function(dd,ii) {
-            if (ii==i) {
-                return circleRHoever;
-            } else {
-                return circleR;
-            } 
-            
-        })
-         .attr("fill", function(dd,ii) {
-            if (ii==i) {
-                return "lightblue";
-            } else {
-                return "black";
-            } 
-            
-        });
-
-    });
-
-
+	        pieSvg.selectAll("*").remove();
+	        drawPie(pieSvg, margin, [filtered_data_sample[i]]);
+	        d3.select("#part3-left").selectAll(".piecircle")
+	         .attr("r", function(dd,ii) {
+	            if (ii==i) {
+	                return circleRHoever;
+	            } else {
+	                return circleR;
+	            }
+        	})
+         	.attr("fill", function(dd,ii) {
+	            if (ii==i) {
+	                return "lightblue";
+	            } else {
+	                return "black";
+	            }
+        	});
+    	});
     });
     var data_sample=_.sample(data,1500);
     var data_work_wage = data_sample.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
     plotFilteredData(svg, margin, data_work_wage, undefined);
     drawPie(pieSvg, margin, data_sample);
 
-
     d3.select("#part3-left").selectAll(".piecircle").on("mouseover",function(d, i){
-        pieSvg.selectAll("*").remove();
-         drawPie(pieSvg, margin, [data_sample[i]]);
+		pieSvg.selectAll("*").remove();
+        drawPie(pieSvg, margin, [data_sample[i]]);
 
-         d3.select("#part3-left").selectAll(".piecircle")
-         .attr("r", function(dd,ii) {
-            if (ii==i) {
-                return circleRHoever;
-            } else {
-                return circleR;
-            } 
-            
-        })
-         .attr("fill", function(dd,ii) {
-            if (ii==i) {
-                return "lightblue";
-            } else {
-                return "black";
-            } 
-            
-        });
-
+        d3.select("#part3-left").selectAll(".piecircle")
+	        .attr("r", function(dd,ii) {
+	            if (ii==i) {
+	                return circleRHoever;
+	            } else {
+	                return circleR;
+	            }
+	        })
+	        .attr("fill", function(dd,ii) {
+	            if (ii==i) {
+	                return "lightblue";
+	            } else {
+	                return "black";
+	            }
+        	});
     });
-
-
 }
 
 // data should in [[x1, y1], [x2, y2], ...]
@@ -376,71 +363,51 @@ function plotFilteredData(svg, margin, data, user_data) {
 		.text("Weekly working hours (hr)")
 }
 
-function newPlotPart2(data) {
+function plotPart2(data) {
 	var div_node = d3.select("#part2-left").node()
     var margin = {top: 100, right: 100, bottom: 100, left: 100},
     width = div_node.getBoundingClientRect().width,
     height = div_node.getBoundingClientRect().height;
+	console.log(width);
+	console.log(height);
     var svg = d3.select("#part2-left")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
-	svg.selectAll("*").remove();
+
+	var pie_data_all = data["All"]["pie_data"];
+
 	d3.selectAll('.part2_radio').on("change",function(){
-        var selectedRadio=d3.select('input[name="radio-group"]:checked').node().value;
-		var selectedData = data[selectedRadio];
-		var data_array = [];
-		var maxX = 0, maxY = 0, labels=[];
-		for (key in selectedData) {
-			data_array.push(selectedData[key]);
-			labels.push(key);
-			var curMaxX = d3.max(selectedData[key], function(d) { return d[0]; });
-			var curMaxY = d3.max(selectedData[key], function(d) { return d[1]; });
-			if (maxX < curMaxX) maxX = curMaxX;
-			if (maxY < curMaxY) maxY = curMaxY;
-		}
-        // var return_data = filterDataByKey(data, selectedRadio);
-        // var data_array = return_data[0];
-        // var labels = return_data[1];
-        // var maxX = return_data[2];
-        // var maxY = return_data[3];
-        svg.selectAll("*").remove();
-		// console.log(data_array);
-        plotMultipleData(svg, margin, data_array, maxX, maxY);
+		svg.selectAll("*").remove();
+		var return_data = filterDataByKey(data, d3.select('input[name="radio-group"]:checked').node().value);
+		var line_data_array = return_data[0];
+		var pie_data_array = return_data[1];
+	    var labels = return_data[2];
+	    var maxX = return_data[3];
+	    var maxY = return_data[4];
+		var minX = return_data[5];
+		var minY = return_data[6];
+        plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, maxY, minX, minY, labels, pie_data_all);
     })
-}
+	var return_data = filterDataByKey(data, d3.select('input[name="radio-group"]:checked').node().value);
+	var line_data_array = return_data[0];
+	var pie_data_array = return_data[1];
+	var labels = return_data[2];
+	var maxX = return_data[3];
+	var maxY = return_data[4];
+	var minX = return_data[5];
+	var minY = return_data[6];
+	plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, maxY, minX, minY, labels, pie_data_all);
 
-function plotPart2(data) {
-    var div_node = d3.select("#part2-left").node()
-    var margin = {top: 100, right: 100, bottom: 100, left: 100},
-    width = div_node.getBoundingClientRect().width,
-    height = div_node.getBoundingClientRect().height;
-    var svg = d3.select("#part2-left")
+	var pieSvg = d3.select("#part2-right")
         .append("svg")
         .attr("width", width)
         .attr("height", height);
 
-
-    // d3.selectAll('.part2_radio').on("change",function(){
-    //     var selectedRadio=d3.select('input[name="radio-group"]:checked').node().value;
-	//
-    //     var return_data = filterDataByKey(data, selectedRadio);
-    //     var data_array = return_data[0];
-    //     var labels = return_data[1];
-    //     var maxX = return_data[2];
-    //     var maxY = return_data[3];
-    //     svg.selectAll("*").remove();
-    //     plotMultipleData(svg, margin, data_array, maxX, maxY);
-    // })
-    var return_data = filterDataByKey(data, d3.select('input[name="radio-group"]:checked').node().value);
-    var data_array = return_data[0];
-    var labels = return_data[1];
-    var maxX = return_data[2];
-    var maxY = return_data[3];
-    plotMultipleData(svg, margin, data_array, maxX, maxY);
+    drawPie(pieSvg, margin, pie_data_all, true);
 }
 
-function plotMultipleData(svg, margin, data_array, maxX, maxY) {
+function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, maxY, minX, minY, labels, pie_data_all) {
     var chart = svg.append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
@@ -466,15 +433,24 @@ function plotMultipleData(svg, margin, data_array, maxX, maxY) {
         .interpolate("basis");
 
     // Scale the range of the data
-    x.domain([0, maxX]);
-    y.domain([0, maxY]);
+    x.domain([minX, maxX]);
+    y.domain([minY, maxY]);
 
     // var color_code = ["LightPink", "LightBlue", "LightGreen", "LightGoldenRodYellow", "LightSalmon"];
     // var line_color_code = ["red", "blue", "green", "yellow", "orange"];
     var colorScale = d3.scale.category10();
 
-    for (var i in data_array) {
-        var line_data = data_array[i];
+	// Setup tooltip
+	d3.select(".d3-tip").remove();
+	tip = d3.tip()
+		.attr('class', 'd3-tip')
+		.offset([-10, 0])
+		.html(function(d,i) {
+			return "<strong>"+labels[i]+"</strong>";
+		});
+
+    for (var i in line_data_array) {
+        var line_data = line_data_array[i];
         chart.append("path")
             .attr("class", "line")
             .attr("stroke", colorScale(i))
@@ -482,6 +458,30 @@ function plotMultipleData(svg, margin, data_array, maxX, maxY) {
             .attr("fill", "none")
             .attr("d", valueline(line_data));
     }
+
+	chart.call(tip);
+	chart.selectAll("path")
+		.on('mouseover', function(d, i){
+				tip.show;
+				var div_node = d3.select("#part2-right").node()
+				var margin = {top: 100, right: 100, bottom: 100, left: 100},
+						width = div_node.getBoundingClientRect().width
+						height = div_node.getBoundingClientRect().height;
+				var pieSvg = d3.select("#part2-right").select("svg");
+				pieSvg.selectAll("*").remove();
+				drawPie(pieSvg, margin, pie_data_array[i], true);
+		})
+		.on('mousemove',tip.show)
+		.on('mouseout', function(d,i){
+			tip.hide;
+			var div_node = d3.select("#part2-right").node()
+			var margin = {top: 100, right: 100, bottom: 100, left: 100},
+					width = div_node.getBoundingClientRect().width
+					height = div_node.getBoundingClientRect().height;
+			var pieSvg = d3.select("#part2-right").select("svg");
+			pieSvg.selectAll("*").remove();
+			drawPie(pieSvg, margin, pie_data_all, true);
+		});
 
     // Add the X Axis
     chart.append("g")
@@ -503,6 +503,33 @@ function plotMultipleData(svg, margin, data_array, maxX, maxY) {
 		.attr("text-anchor", "middle")
 		.attr("transform", "translate("+ (width/2) +","+ (height+(margin.bottom/2))+ ")")
 		.text("Weekly working hours (hr)")
+
+	var legendRectSize = 20;
+	var legendSpacing = 10;
+	var legend = chart.selectAll('.legend')
+		.data(colorScale.domain())
+		.enter()
+		.append('g')
+		.attr('class', 'legend')
+		.attr('transform', function(d, i) {
+				var horz = 27 * legendRectSize;
+				var vert = i * 30;
+				return 'translate(' + horz + ',' + vert + ')';
+		});
+
+	legend.append('rect')
+		.attr('width', legendRectSize)
+		.attr('height', legendRectSize)
+		.on('mouseover', tip.show)
+      	.on('mouseout', tip.hide)
+		.style('fill', colorScale)
+		.style('stroke', colorScale)
+
+	legend.append('text')
+		.attr('x', legendRectSize + legendSpacing)
+		.attr('y', legendRectSize - legendSpacing)
+		.style("font-size","14px")
+		.text(function(d) { return labels[d]; });
 }
 
 function plotPart1(data) {
@@ -654,8 +681,11 @@ function plotDataAndSupplyCurve(svg, margin, data) {
 	}
 }
 
-function drawPie(svg, margin, data) {
-    dataset = getPieChartData(data);
+function drawPie(svg, margin, data, isPieData) {
+	if (isPieData == undefined)
+    	dataset = getPieChartData(data);
+	else
+		dataset = data;
     // dataset = [data_dict.travel, data_dict.sleep, data_dict.work, data_dict.household, data_dict.leisure, data_dict.others];
 
     var chart = svg.append("g")
