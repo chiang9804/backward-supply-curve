@@ -91,7 +91,7 @@ Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studie
 <div id="part2" class="part" style="height:80vh">
 	<br>
 	<h3>Filter and See How Trend Lines Change</h3>
-	<p><b>Time for discovery!</b> Observe the distribution of supply curve of labor based on the filter attributes.<br>Every criteria could be a determining factor. Explore and see.</p>
+	<p><b>Time for discovery!</b> Observe the distribution of supply curve of labor based on filter attributes. Click on the attribute for the focused view of supply curves, and then hover over your interested item to see the pie chart change.</p>
 
         <form style="line-height: 2">
             <input class="part2_radio" type="radio" name="radio-group" value="Gender" checked>Gender
@@ -302,12 +302,12 @@ function plotPart3(data){
     	})
         .on('mouseout', function(d,i){
             pieSvg.selectAll("*").remove();
-            drawPie(pieSvg, margin, filtered_data_sample);  
+            drawPie(pieSvg, margin, filtered_data_sample);
             d3.select("#part3-left").selectAll(".piecircle")
              .attr("r", circleR)
-            .attr("fill", "black");  
+            .attr("fill", "black");
 
-        });      
+        });
     });
     var data_sample=_.sample(data,1500);
     var data_work_wage = data_sample.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
@@ -334,16 +334,16 @@ function plotPart3(data){
                 return "black";
             }
 
-        });   
+        });
     })
     .on('mouseout', function(d,i){
             pieSvg.selectAll("*").remove();
             drawPie(pieSvg, margin, data_sample);
             d3.select("#part3-left").selectAll(".piecircle")
              .attr("r", circleR)
-            .attr("fill", "black");  
+            .attr("fill", "black");
 
-    }); 
+    });
 }
 
 // data should in [[x1, y1], [x2, y2], ...]
@@ -539,7 +539,7 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
                 .style("opacity", 1);
             legend.selectAll(".legend-rect")
                 .transition()
-                .attr("opacity", non_selected_opacity); 
+                .attr("opacity", non_selected_opacity);
             legend.selectAll(".legend-rect-"+i)
                 .transition()
                 .attr("opacity", 1);
@@ -555,7 +555,7 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 
             legend.selectAll(".legend-rect")
                 .transition()
-                .attr("opacity", 1);  
+                .attr("opacity", 1);
 		});
 
     // Add the X Axis
@@ -602,13 +602,13 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 		.style('stroke', colorScale);
 
     legend.append('text')
-        .attr('x', legendRectSize/2)    
+        .attr('x', legendRectSize/2)
         .attr('y', legendSpacing)
         .attr('alignment-baseline','central')
         .attr('class', function(d, i) {return "legend-text legend-text-"+i;})
         .attr('text-anchor','middle')
         .style("font-size","14px")
-        .text(function(d) { return labels[d]; });  
+        .text(function(d) { return labels[d]; });
 
     chart.selectAll(".legend-rect")
         .on('mouseover', function(d, i){
@@ -624,10 +624,10 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
                 .style("opacity", 1);
             legend.selectAll(".legend-rect")
                 .transition()
-                .attr("opacity", non_selected_opacity); 
+                .attr("opacity", non_selected_opacity);
             legend.selectAll(".legend-rect-"+i)
                 .transition()
-                .attr("opacity", 1);    
+                .attr("opacity", 1);
         })
         .on('mouseout', function(d,i){
             var pieSvg = d3.select("#part2-right").select("svg");
@@ -640,8 +640,8 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 
             legend.selectAll(".legend-rect")
                 .transition()
-                .attr("opacity", 1);          
-        }); 
+                .attr("opacity", 1);
+        });
 
     chart.selectAll(".legend-text")
         .on('mouseover', function(d, i){
@@ -657,10 +657,10 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
                 .style("opacity", 1);
             legend.selectAll(".legend-rect")
                 .transition()
-                .attr("opacity", non_selected_opacity); 
+                .attr("opacity", non_selected_opacity);
             legend.selectAll(".legend-rect-"+i)
                 .transition()
-                .attr("opacity", 1);    
+                .attr("opacity", 1);
         })
         .on('mouseout', function(d,i){
             var pieSvg = d3.select("#part2-right").select("svg");
@@ -673,8 +673,8 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 
             legend.selectAll(".legend-rect")
                 .transition()
-                .attr("opacity", 1);          
-        });          
+                .attr("opacity", 1);
+        });
 }
 
 function plotPart1(data, line_data) {

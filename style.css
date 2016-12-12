@@ -127,14 +127,14 @@ ol, ul {
     height: 100vh;
 }
 
-#part1 {
+/*#part1 {
     border-color: rgba(96, 236, 114, 0.3);
     border-top-style: dotted;
     border-right-style: dotted;
     border-bottom-style: dotted;
     border-left-style: dotted;
     position: relative;
-}
+}*/
 
 #part1-left {
     width:49%;
@@ -156,7 +156,7 @@ ol, ul {
 #part2-left {
     width:49%;
     float:left;
-    height:80%;
+    height:85%;
 }
 
 #part2-right {
@@ -165,14 +165,14 @@ ol, ul {
     height:80%;
 }
 
-#part3 {
+/*#part3 {
     border-color: rgba(236, 185, 96, 0.3);
     border-top-style: solid;
     border-right-style: solid;
     border-bottom-style: solid;
     border-left-style: solid;
     position: relative;
-}
+}*/
 
 #part3-left {
     width:49%;
