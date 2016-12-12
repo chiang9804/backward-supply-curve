@@ -5,6 +5,9 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+svg text{
+  font-family: 'Arapey', serif;
+}
 h1{
   font: 60px arapey;
   color: #d16558;
@@ -151,15 +154,15 @@ ol, ul {
 }
 
 #part2-left {
-    width:40%;
+    width:49%;
     float:left;
     height:80%;
 }
 
 #part2-right {
-    width:60%;
+    width:49%;
     float:right;
-    height:60%;
+    height:80%;
 }
 
 #part3 {
