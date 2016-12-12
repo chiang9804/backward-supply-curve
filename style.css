@@ -151,13 +151,13 @@ ol, ul {
 }
 
 #part2-left {
-    width:40%;
+    width:49%;
     float:left;
-    height:80%;
+    height:60%;
 }
 
 #part2-right {
-    width:60%;
+    width:49%;
     float:right;
     height:60%;
 }
