@@ -212,14 +212,14 @@ var line_data_f = "./data/line_and_pie_data.json"
 var degree = 3; // degree of regression
 
 d3.csv(f, function(data) {
-    plotPart1(data);
-    // plotPart2(data);
+	d3.json(line_data_f, function(line_data) {
+		plotPart1(data, line_data["All"]["line_data"]);
+		plotPart2(line_data);
+	});
     plotPart3(data);
 });
 
-d3.json(line_data_f, function(data) {
-	plotPart2(data);
-});
+
 
 d3.select(window).on('resize.updatesvg', updateWindow);
 function updateWindow(){
@@ -434,8 +434,6 @@ function plotPart2(data) {
 		var margin = {top: 25, right: 50, bottom: 70, left: 65},
     width = div_node.getBoundingClientRect().width,
     height = div_node.getBoundingClientRect().height;
-	console.log(width);
-	console.log(height);
     var svg = d3.select("#part2-left")
         .append("svg")
         .attr("width", width)
@@ -528,10 +526,17 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 	chart.call(tip);
 	chart.selectAll("path")
 		.on('mouseover', function(d, i){
-				tip.show;
-				var pieSvg = d3.select("#part2-right").select("svg");
-				pieSvg.selectAll("*").remove();
-				drawPie(pieSvg, margin, pie_data_array[i], true);
+			tip.show;
+			var pieSvg = d3.select("#part2-right").select("svg");
+			pieSvg.selectAll("*").remove();
+			drawPie(pieSvg, margin, pie_data_array[i], true);
+
+			chart.selectAll("path")
+				.transition()
+	  			.style("opacity", function(dd,ii){
+					if(i!=ii) return 0.5;
+					else return 1;
+				});
 		})
 		.on('mousemove',tip.show)
 		.on('mouseout', function(d,i){
@@ -539,6 +544,10 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 			var pieSvg = d3.select("#part2-right").select("svg");
 			pieSvg.selectAll("*").remove();
 			drawPie(pieSvg, margin, pie_data_all, true);
+
+			chart.selectAll("path")
+				.transition()
+	  			.style("opacity", 1);
 		});
 
     // Add the X Axis
@@ -590,7 +599,7 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 		.text(function(d) { return labels[d]; });
 }
 
-function plotPart1(data) {
+function plotPart1(data, line_data) {
 
     // Set the dimensions of the canvas / graph
     var div_node = d3.select("#part1-left").node()
@@ -604,7 +613,7 @@ function plotPart1(data) {
         .attr("width", width)
         .attr("height", height);
 
-    plotDataAndSupplyCurve(svg, margin, data);
+    plotDataAndSupplyCurve(svg, margin, data, line_data);
 
     var pieSvg = d3.select("#part1-right")
         .append("svg")
@@ -615,11 +624,11 @@ function plotPart1(data) {
 }
 
 // data should in [[x1, y1], [x2, y2], ...]
-function plotDataAndSupplyCurve(svg, margin, data) {
+function plotDataAndSupplyCurve(svg, margin, data, line_data) {
 	var data_subsample = _.sample(data, 1500);
 	var data_work_wage = data_subsample.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
 
-	var line_data = getRegressionDataForY(data_work_wage);
+	// var line_data = getRegressionDataForY(data_work_wage);
     var chart = svg.append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
