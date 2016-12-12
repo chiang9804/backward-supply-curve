@@ -205,7 +205,7 @@ Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studie
 <script>
 var circleR=4;
 var circleRHoever=7;
-
+var non_selected_opacity=0.2;
 
 var f = "./data/data_full-time_category.csv"
 var line_data_f = "./data/line_and_pie_data.json"
@@ -472,11 +472,12 @@ function plotPart2(data) {
 }
 
 function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, maxY, minX, minY, labels, pie_data_all) {
+    var spaceforlegend=100;
     var chart = svg.append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
 
-    var width = svg.node().getBoundingClientRect().width - margin.left - margin.right;
+    var width = svg.node().getBoundingClientRect().width - margin.left - margin.right-spaceforlegend;
     var height = svg.node().getBoundingClientRect().height - margin.top - margin.bottom;
 
     // Set the ranges
@@ -505,54 +506,62 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
     var colorScale = d3.scale.category10();
 
 	// Setup tooltip
-	d3.select(".d3-tip").remove();
-	tip = d3.tip()
-		.attr('class', 'd3-tip')
-		.offset([-10, 0])
-		.html(function(d,i) {
-			return "<strong>"+labels[i]+"</strong>";
-		});
+	// d3.select(".d3-tip").remove();
+	// tip = d3.tip()
+	// 	.attr('class', 'd3-tip')
+	// 	.offset([-10, 0])
+	// 	.html(function(d,i) {
+	// 		return "<strong>"+labels[i]+"</strong>";
+	// 	});
 
     for (var i in line_data_array) {
         var line_data = line_data_array[i];
         chart.append("path")
-            .attr("class", "line")
+            .attr("class", "line line-"+i)
             .attr("stroke", colorScale(i))
             .attr("stroke-width", "2")
             .attr("fill", "none")
             .attr("d", valueline(line_data));
     }
 
-	chart.call(tip);
+	// chart.call(tip);
 	chart.selectAll("path")
 		.on('mouseover', function(d, i){
-			tip.show;
 			var pieSvg = d3.select("#part2-right").select("svg");
 			pieSvg.selectAll("*").remove();
 			drawPie(pieSvg, margin, pie_data_array[i], true);
 
-			chart.selectAll("path")
-				.transition()
-	  			.style("opacity", function(dd,ii){
-					if(i!=ii) return 0.5;
-					else return 1;
-				});
+			chart.selectAll(".line")
+                .transition()
+                .style("opacity", non_selected_opacity);
+            chart.select(".line-"+i)
+                .transition()
+                .style("opacity", 1);
+            legend.selectAll(".legend-rect")
+                .transition()
+                .attr("opacity", non_selected_opacity); 
+            legend.selectAll(".legend-rect-"+i)
+                .transition()
+                .attr("opacity", 1);
 		})
-		.on('mousemove',tip.show)
 		.on('mouseout', function(d,i){
-			tip.hide;
 			var pieSvg = d3.select("#part2-right").select("svg");
 			pieSvg.selectAll("*").remove();
 			drawPie(pieSvg, margin, pie_data_all, true);
 
-			chart.selectAll("path")
-				.transition()
-	  			.style("opacity", 1);
+			chart.selectAll(".line")
+                .transition()
+                .style("opacity", 1);
+
+            legend.selectAll(".legend-rect")
+                .transition()
+                .attr("opacity", 1);  
 		});
 
     // Add the X Axis
     chart.append("g")
         .attr("class", "x axis")
+        .style("text-align",'center')
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);
 
@@ -571,7 +580,8 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 		.attr("transform", "translate("+ (width/2) +","+ (height+(margin.bottom/2))+ ")")
 		.text("Weekly working hours (hr)")
 
-	var legendRectSize = 20;
+
+	var legendRectSize = 100;
 	var legendSpacing = 10;
 	var legend = chart.selectAll('.legend')
 		.data(colorScale.domain())
@@ -579,24 +589,92 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 		.append('g')
 		.attr('class', 'legend')
 		.attr('transform', function(d, i) {
-				var horz = 27 * legendRectSize;
-				var vert = i * 30;
+				var horz = width+40;
+				var vert = 30*i;
 				return 'translate(' + horz + ',' + vert + ')';
 		});
 
 	legend.append('rect')
 		.attr('width', legendRectSize)
-		.attr('height', legendRectSize)
-		.on('mouseover', tip.show)
-      	.on('mouseout', tip.hide)
+		.attr('height', 20)
+        .attr('class', function(d, i) {return "legend-rect legend-rect-"+i;})
 		.style('fill', colorScale)
-		.style('stroke', colorScale)
+		.style('stroke', colorScale);
 
-	legend.append('text')
-		.attr('x', legendRectSize + legendSpacing)
-		.attr('y', legendRectSize - legendSpacing)
-		.style("font-size","14px")
-		.text(function(d) { return labels[d]; });
+    legend.append('text')
+        .attr('x', legendRectSize/2)    
+        .attr('y', legendSpacing)
+        .attr('alignment-baseline','central')
+        .attr('class', function(d, i) {return "legend-text legend-text-"+i;})
+        .attr('text-anchor','middle')
+        .style("font-size","14px")
+        .text(function(d) { return labels[d]; });  
+
+    chart.selectAll(".legend-rect")
+        .on('mouseover', function(d, i){
+            var pieSvg = d3.select("#part2-right").select("svg");
+            pieSvg.selectAll("*").remove();
+            drawPie(pieSvg, margin, pie_data_array[i], true);
+
+            chart.selectAll(".line")
+                .transition()
+                .style("opacity", non_selected_opacity);
+            chart.select(".line-"+i)
+                .transition()
+                .style("opacity", 1);
+            legend.selectAll(".legend-rect")
+                .transition()
+                .attr("opacity", non_selected_opacity); 
+            legend.selectAll(".legend-rect-"+i)
+                .transition()
+                .attr("opacity", 1);    
+        })
+        .on('mouseout', function(d,i){
+            var pieSvg = d3.select("#part2-right").select("svg");
+            pieSvg.selectAll("*").remove();
+            drawPie(pieSvg, margin, pie_data_all, true);
+
+            chart.selectAll(".line")
+                .transition()
+                .style("opacity", 1);
+
+            legend.selectAll(".legend-rect")
+                .transition()
+                .attr("opacity", 1);          
+        }); 
+
+    chart.selectAll(".legend-text")
+        .on('mouseover', function(d, i){
+            var pieSvg = d3.select("#part2-right").select("svg");
+            pieSvg.selectAll("*").remove();
+            drawPie(pieSvg, margin, pie_data_array[i], true);
+
+            chart.selectAll(".line")
+                .transition()
+                .style("opacity", non_selected_opacity);
+            chart.select(".line-"+i)
+                .transition()
+                .style("opacity", 1);
+            legend.selectAll(".legend-rect")
+                .transition()
+                .attr("opacity", non_selected_opacity); 
+            legend.selectAll(".legend-rect-"+i)
+                .transition()
+                .attr("opacity", 1);    
+        })
+        .on('mouseout', function(d,i){
+            var pieSvg = d3.select("#part2-right").select("svg");
+            pieSvg.selectAll("*").remove();
+            drawPie(pieSvg, margin, pie_data_all, true);
+
+            chart.selectAll(".line")
+                .transition()
+                .style("opacity", 1);
+
+            legend.selectAll(".legend-rect")
+                .transition()
+                .attr("opacity", 1);          
+        });          
 }
 
 function plotPart1(data, line_data) {
