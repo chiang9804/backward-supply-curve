@@ -2,7 +2,7 @@
 
 ## How to execute
 1. Clone the repository
-2. Get into the folder and run a simple server. e.g. `python -m SimpleHTTPServer 8000`
+2. Get into the folder and run a simple server. e.g. `python -m SimpleHTTPServer 8000` or execute `sh runserver.sh`
 3. Then you can access the index.html through browser with url `localhost:8000`
 
 ## Information

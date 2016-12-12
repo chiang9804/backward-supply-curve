@@ -23,37 +23,30 @@ function filterDataByKey(data, key) {
         console.log("filterDataByKey: data empty");
         return;
     }
-    if (!data[0].hasOwnProperty(key)) {
+    if (!data.hasOwnProperty(key)) {
         console.log("filterDataByKey: key not found");
         return;
     }
 
-    var data_group = {};
-    for (var i in data){
-        if (typeof(data_group[data[i][key]]) == "undefined") {
-            data_group[data[i][key]] = [data[i]];
-        } else {
-            data_group[data[i][key]].push(data[i]);
-        }
+    var pie_data_array = [];
+    var line_data_array = [];
+    var maxX = 0, maxY = 0, minX = 999999, minY = 999999, labels=[];
+    var selectedData = data[key];
+    for (subgroup in selectedData) {
+        pie_data_array.push(selectedData[subgroup]["pie_data"]);
+        line_data = selectedData[subgroup]["line_data"];
+        line_data_array.push(line_data);
+        labels.push(subgroup);
+        var curMaxX = d3.max(line_data, function(d) { return d[0]; });
+        var curMaxY = d3.max(line_data, function(d) { return d[1]; });
+        var curMinX = d3.min(line_data, function(d) { return d[0]; });
+        var curMinY = d3.min(line_data, function(d) { return d[1]; });
+        if (maxX < curMaxX) maxX = curMaxX;
+        if (maxY < curMaxY) maxY = curMaxY;
+        if (minX > curMinX) minX = curMinX;
+        if (minY > curMinY) minY = curMinY;
     }
-    data_array = []
-    labels = []
-    maxXs = []
-    maxYs = []
-    for (var key in data_group) {
-        var subdata = data_group[key];
-        var data_work_wage = subdata.map(function(d) { return [ +d["work_per_week"], +d["wage"] ]; });
-        var line_data = getRegressionDataForY(data_work_wage);
-        var maxX = d3.max(line_data, function(d) { return d[0]; });
-        var maxY = d3.max(line_data, function(d) { return d[1]; });
-        data_array.push(line_data);
-        labels.push(key);
-        maxXs.push(maxX);
-        maxYs.push(maxY);
-    }
-    var maxX = Math.max.apply(Math, maxXs);
-    var maxY = Math.max.apply(Math, maxYs);
-    return [data_array, labels, maxX, maxY];
+    return [line_data_array, pie_data_array, labels, maxX, maxY, minX, minY];
 }
 
 function getRegressionDataForY(data) {
