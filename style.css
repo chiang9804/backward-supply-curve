@@ -7,6 +7,7 @@ body {
 }
 svg text{
   font-family: 'Arapey', serif;
+  font-size: 14px;
 }
 h1{
   font: 60px arapey;
@@ -156,13 +157,13 @@ ol, ul {
 #part2-left {
     width:49%;
     float:left;
-    height:85%;
+    height:75%;
 }
 
 #part2-right {
     width:49%;
     float:right;
-    height:80%;
+    height:75%;
 }
 
 /*#part3 {
