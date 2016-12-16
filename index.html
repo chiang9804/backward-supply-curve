@@ -109,21 +109,6 @@ Using the dataset from <a href="http://www.icpsr.umich.edu/icpsrweb/NADAC/studie
                         <!-- <label for="year">Year</label> -->
         </form>
     <div id="part2-left">
-<!--         <form style="line-height: 2">
-            <input class="part2_radio" type="radio" name="radio-group" value="Gender" checked>Gender<br>
-						<!-- <label for="Gender">Gender</label><br> -->
-<!--             <input class="part2_radio" type="radio" name="radio-group" value="age_group">Age<br>
-						<!-- <label for="Age">Age</label><br> -->
-<!--             <input class="part2_radio" type="radio" name="radio-group" value="education_category">Education<br> -->
-						<!-- <label for="Education">Education</label><br> -->
-            <!-- <input class="part2_radio" type="radio" name="radio-group" value="metropolitan_category">Urban/Rural Residents<br> -->
-						<!-- <label for="metropolitan">Urban/Rural Residents</label><br> -->
-           <!--  <input class="part2_radio" type="radio" name="radio-group" value="partner_category">Living with Partner(s)<br> -->
-						<!-- <label for="partner">Living with Partner(s)</label><br> -->
-
-<!--             <input class="part2_radio" type="radio" name="radio-group" value="year">Year<br> -->
-						<!-- <label for="year">Year</label> -->
-<!--         </form> -->
     </div>
     <div id="part2-right">
     </div>
@@ -578,8 +563,12 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
 	chart.append("text")
 		.attr("text-anchor", "middle")
 		.attr("transform", "translate("+ (width/2) +","+ (height+(margin.bottom/2))+ ")")
-		.text("Weekly working hours (hr)")
+		.text("Weekly working hours (hr)");
 
+    chart.append("text")
+        .attr("text-anchor", "middle")
+        .attr("transform", "translate("+ (width/2) +","+ (height+(margin.bottom/2)+20)+ ")")
+        .text("Note: the x axis is not correctly scaled for the sake of readability.");
 
 	var legendRectSize = 100;
 	var legendSpacing = 10;
@@ -903,10 +892,10 @@ function drawPie(svg, margin, data, isPieData) {
         .append('g')
         .attr('class', 'legend')
         .attr('transform', function(d, i) {
-            var height = legendRectSize + legendSpacing;
+            var height = legendRectSize + legendSpacing+5;
             var offset =  height * color.domain().length / 2;
             var horz = -3 * legendRectSize + cx;
-            var vert = i * height - offset + cy;
+            var vert = i * height - offset + cy+5;
             return 'translate(' + horz + ',' + vert + ')';
         });
 
@@ -918,7 +907,7 @@ function drawPie(svg, margin, data, isPieData) {
 
     legend.append('text')
         .attr('x', legendRectSize + legendSpacing)
-        .attr('y', legendRectSize - legendSpacing)
+        .attr('y', legendRectSize - legendSpacing+2)
         .text(function(d) { return d; });
 
     /* ------- TEXT LABELS -------*/
