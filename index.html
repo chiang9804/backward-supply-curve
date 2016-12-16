@@ -568,7 +568,7 @@ function plotMultipleData(svg, margin, pie_data_array, line_data_array, maxX, ma
     chart.append("text")
         .attr("text-anchor", "middle")
         .attr("transform", "translate("+ (width/2) +","+ (height+(margin.bottom/2)+20)+ ")")
-        .text("Note: the x axis is not correctly scaled for the sake of readability.");
+        .text("Note: the scale of x axis is adjusted for the sake of readability.");
 
 	var legendRectSize = 100;
 	var legendSpacing = 10;
